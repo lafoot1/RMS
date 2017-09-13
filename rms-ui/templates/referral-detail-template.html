@@ -1,0 +1,240 @@
+<div class="page-title">Referrals</div>
+<div class="">
+   <div class="box-heading">
+      Candidate Information
+      <a class="edit-but"><i class="glyphicon glyphicon-edit"></i>Edit</a>
+   </div>
+   <div class="box-body">
+      <div class="view-details">
+         <% var candidate = referral.get("candidate"); %>
+         <li>Name: <%= candidate.firstName %> <%= candidate.lastName %></li>
+         <li>Gender: <%= candidate.genderDesc %> </li>
+         <li>Email: <%= candidate.email %> </li>
+         <li>Mobile: <%= candidate.mobile %> </li>
+         <li>Location: <%= candidate.currentLocation %> </li>
+         <li>City: <%= candidate.city %> </li>
+         <li>Experience: <%= candidate.experience %> </li>
+         <li>Current CTC: <%= candidate.currentCtc %> </li>
+         <li>Expected CTC: <%= candidate.expectedCtc %> </li>
+      </div>
+      <div class="edit-details col-md-8" hidden>
+        <form>
+            <div class="form-group">
+               <label for="firstName">First Name</label>
+               <input class="form-control" name="firstName" type="text" value="<%= candidate.firstName %>" />
+            </div>
+            <div class="form-group">
+               <label for="lastName">Last Name</label>
+               <input class="form-control" name="lastName" type="text" value="<%= candidate.lastName %>" />
+            </div>
+            <div class="form-group">
+               <label for="gender">Gender:</label>
+               <select class="form-control" name="gender" id="gender">
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+               </select>
+               <script type="text/javascript">$("#gender").val("<%= candidate.gender %>");</script>
+            </div>
+            <div class="form-group">
+               <label for="email">Email</label>
+               <input class="form-control" name="email" type="text" value="<%= candidate.email %>" />
+            </div>
+            <div class="form-group">
+               <label for="email">Mobile</label>
+               <input class="form-control" name="mobile" type="text" value="<%= candidate.mobile %>" />
+            </div>
+            <div class="form-group">
+               <label for="email">Location</label>
+               <input class="form-control" name="currentLocation" type="text" value="<%= candidate.currentLocation %>" />
+            </div>
+            <div class="form-group">
+               <label for="email">Experience</label>
+               <input class="form-control" name="experience" type="text" value="<%= candidate.experience %>" />
+            </div>
+            <div class="form-group">
+               <label for="email">Current CTC</label>
+               <input class="form-control" name="currentCtc" type="text" value="<%= candidate.currentCtc %>" />
+            </div>
+            <div class="form-group">
+               <label for="email">Expected CTC</label>
+               <input class="form-control" name="expectedCtc" type="text" value="<%= candidate.expectedCtc %>" />
+            </div>
+            <div class="btn-margin-bottom">
+                <button type="button" class="btn btn-primary save">Save</button>
+                <button type="button" class="btn btn-padding cancel-candidate-update">Cancel</button>
+            </div>
+        </form>
+      </div>
+   </div>
+</div>
+<div class="" style="clear:both;">
+   <div class="box-heading">
+      Requisition Information
+   </div>
+   <div class="box-body">
+      <% var requisition = referral.get("requisition"); %>
+      <li>Requisition Number: <%= requisition.requisitionNo %> </li>
+      <li>Function: <%= requisition.functionDesc %> </li>
+      <li>Speciality: <%= requisition.specialityDesc %> </li>
+      <li>Service Line: <%= requisition.serviceLineDesc %> </li>
+      <li>Title: <%= requisition.title %> </li>
+   </div>
+</div>
+<div class="margin-20">
+   <div class="box-heading">
+      Referral Information
+      <% if(referral.get("wfStatus").wfStatusDesc!= "Rejected") { %>
+      <a class="edit-status"><i class="glyphicon glyphicon-edit"></i>Edit</a>
+      <% } %>
+   </div>
+   <div class="box-body">
+      <div class="show-hide">
+         <li>RMS Id: <%= referral.get("id") %></li>
+         <li>RMS Status: <%= referral.get("rmsStatus") %></li>
+         <li>Source Type: <%= referral.get("sourceType") %> </li>
+         <li>Status: <%= referral.get("wfStatus").wfStatusDesc %> </li>
+         <li>Sub Status: <%= referral.get("wfStatus").wfSubstatusDesc %> </li>
+      </div>
+      <div class="edit-status-info" hidden>
+      <form>
+        <div class="row">
+          <div class='col-sm-6'>
+              <div class="form-group">
+                  <label for="Status">Current Status</label>
+                  <%= referral.get("wfStatus").wfStatusDesc %>
+              </div>
+              <%
+                if(referral.get("wfStatus").wfSubstatusDesc){
+              %>
+              <div class="form-group">
+                  <label for="Status">Current Sub Status</label>
+                  <%= referral.get("wfStatus").wfSubstatusDesc %>
+              </div>
+              <% } %>
+          </div>
+        </div>
+        <div class="row">
+        <div class='col-sm-6'>
+         <div class="form-group">
+            <label for="Status">Update Status</label>
+            <select class="form-control wfStatus" name="id">
+               <option value="-1" selected>Select Application Status </option>
+               <% _.each(referral.get("wfStatus").targetPaths, function(path) { %>
+               <option value="<%= path.id %>"><%= path.wfStatusDesc + (path.wfSubstatusDesc?' - '+path.wfSubstatusDesc:'') %></option>
+               <% }); %>
+            </select>
+         </div>
+         </div>
+         </div>
+         <div class="in-progress" hidden>
+            <script type="text/javascript">
+               $( function() {
+                 $( "#datepicker" ).datepicker();
+               } );
+            </script>
+            <!-- <div class="form-group col-md-6" style="float:left;">
+               <label for="Date">Date</label>
+               <span class="glyphicon glyphicon-calendar"> 
+               <input type="text" id="datepicker">     
+            </div> -->
+            <div class="row">
+                <div class='col-sm-6'>
+                    <div class="form-group">
+                    <label for="">Date and Time</label>
+                        <div class='input-group date' id='datetimepicker1'>
+                            <input type='text' class="form-control" />
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <script type="text/javascript">$(function () { $('#datetimepicker1').datetimepicker(); });</script>
+            </div>
+            <div class="row">
+                <div class='col-sm-6'>
+                    <div class="form-group">
+                        <label for="location">Location</label>
+                        <input class="form-control" type="text" value="">     
+                    </div>
+                </div>
+            </div>
+         </div>
+         <div>
+         <button type="button" class="btn btn-primary saveReferral">Save</button>
+         <button type="button" class="btn btn-padding cancel-status">Cancel</button>
+         </div>
+        </form>
+      </div>
+   </div>
+</div>
+<div class="">
+   <div class="box-heading">
+      Referrer Information
+   </div>
+   <div class="box-body">
+      <% var referrer = referral.get("referrer"); %>
+      <li>Name: <%= referrer.firstName %> <%= candidate.lastName %> </li>
+      <li>Email: <%= referrer.email %> </li>
+      <li>Employee Id: <%= referrer.id %> </li>
+   </div>
+</div>
+<% var histories = referral.get("wfHistories"); 
+  if (histories && histories.length > 0) {
+%>
+<div class="">
+   <div class="box-heading">
+      History
+   </div>
+   <div class="box-body">
+    <table class="table table-striped pagination referral-table" >
+        <thead>
+            <th>Previous Status</th>
+            <th>Current Status</th>
+            <th>Comment</th>
+            <th>Date & Time</th>
+        </thead>
+        <% _.each(histories, function(history) { %>
+       <tr class="tab-row">
+            <td class="tab-id"><%= history.fromWfStatus.wfStatusDesc %></td>
+            <td><%= history.toWfStatus.wfStatusDesc %></td>
+            <td><%= history.comment %></td>
+            <td><%= formatDate(new Date(history.createdTs)) %></td>
+        </tr>
+      <% }); %>
+      </table>
+   </div>
+</div>
+<% } %>
+<div class="">
+   <div class="box-heading">
+      Attachments
+   </div>
+   <div class="box-body">
+      <%  
+         var candidate = referral.get("candidate");
+         if(candidate.attachments.length > 0) {
+         %>
+      <table class="table table-striped pagination referral-table" >
+         <thead>
+            <th>Name</th>
+            <th>Version</th>
+            <th>Content Type</th>
+            <th>Attachment</th>
+         </thead>
+         <%  
+            candidate.attachments.forEach(function(item) { 
+            %>
+         <tr class="tab-row">
+            <td class="tab-id"><%= item.name %></td>
+            <td><%= item.version %></td>
+            <td><%= item.contentType %></td>
+            <td><a href=<%= App.Context.getValue('BASE_URL') + "/rest/secured/document/" + item.id %> target="_blank"><%= item.name %>.<%= item.extn %></td>
+         </tr>
+         <% }); %>
+      </table>
+      <% } else { %>
+      <p>No Attachements</p>
+      <% } %>
+   </div>
+</div>

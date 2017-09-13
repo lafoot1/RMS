@@ -1,0 +1,48 @@
+
+/*Refral Section*/
+.edit-but{
+  float: right;
+  cursor: pointer;
+}
+.edit-status{
+  float: right;
+  cursor: pointer;
+}
+
+.btn-padding{
+    margin-left: 20px;
+}
+.btn-margin-bottom{
+  margin-bottom:20px;
+}
+.alert-dismissable{
+    
+}
+
+.upload-heading{
+  padding: 0px 0px !important;
+  font-size: 22px;
+}
+
+.upload-panel-body {
+  width: 80%;
+} 
+
+
+
+.rms-table > tbody > tr {
+  cursor: pointer;
+}
+
+.rms-table>tbody>tr:hover {
+  background-color: #c1c1c1;
+
+}
+
+.rms-table >tbody>tr>td,.rms-table>thead>tr>th {
+  padding:15px;
+}
+
+.display-inherit {
+	display: inherit;
+}

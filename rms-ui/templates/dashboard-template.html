@@ -1,0 +1,82 @@
+<div class="row">
+ <div class="page-title col-xs-6 col-sm-6 col-md-8">Referrals</div>
+  <div class="row col-xs-5 col-sm-5 col-md-3 form-group">
+    <input class="form-control search col-md-8 col-sm-8 col-xs-8" placeholder="Search" name="search" type="search" value="<%= query %>" />
+    <div class="input-group-btn display-inherit">
+    <button class="btnSearch btn btn-default"><i class="glyphicon glyphicon-search"></i></button>
+    </div>
+  </div>
+</div>
+<div class="table-responsive">
+  <table class="table table-striped pagination rms-table" >
+  	<thead>
+  		<th>RMS Id</th>
+      <th>Requisition Number</th>
+  		<th>First Name</th>
+  		<th>Last Name</th>
+  		<th>Recruiter Name</th>
+  		<th>Shared With</th>
+  		<th>Skillset</th>
+  		<th>Status</th>
+  		<th>Sub Status</th>
+      <th>Action</th>
+  	</thead>
+    <% _.each(referrals, function(referral) {
+    	var candidate = referral.get("candidate");
+    	var requisition = referral.get("requisition");
+      var wfStatus = referral.get("wfStatus");
+    	var skills = '';
+    	candidate.skillSet.forEach(function(item) {
+    		skills += item.code;
+    	});
+    %>
+    <tr class="tab-row referral-tr">
+	    <td class="tab-id"><%= candidate.rmsId %> <span hidden="true"><%= referral.get('id') %></span></td>
+	    <td><%= requisition.requisitionNo %></td>
+      <td><%= candidate.firstName %></td>
+	    <td><%= candidate.lastName %></td>
+	    <td><%= requisition.recruiterName %></td>
+	    <td><%= referral.get("sharedWith") %></td>
+	    <td><%= skills %></td>
+	    <td><%= wfStatus.wfStatusDesc %></td>
+	    <td><%= wfStatus.wfSubStatusDesc %></td>
+      <% 
+        var status = wfStatus.wfStatusDesc
+        if(status == "Rejected"){
+       %>
+      <td><button type="button" class="btn btn-default btn-deleted" disabled data-id ="<%= referral.get('id') %>" data-toggle="modal" data-target="#myModal">Reject</button></td> 
+      <% } else { %>
+      <td><button type="button" class="btn btn-primary btn-deleted" data-id ="<%= referral.get('id') %>" data-toggle="modal" data-target="#myModal">Reject</button></td> 
+      <% } %>
+    </tr>
+    <% }) %>
+  </table>
+  <ul class="pagination">
+  	<% for(var i=0;i<pages;i++) {%>
+      <li <%  if (i == currentPage) {%>class="active"<%}%> class="paginate"><a href="#"><%= i+1 %></a></li>
+    <% } %>
+  </ul>
+</div>
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Are you sure about Rejection?</h4>
+      </div>
+      <form id="rejectForm">
+      <div class="modal-body">
+        <p>Reason for Rejection</p>  
+          <textarea rows="4" cols="70" name="comment" form="rejectForm"></textarea>       
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary reject-save" data-dismiss="modal">Save</button>
+        <button type="button" class="btn btn-default btn-close" data-dismiss="modal">Close</button>
+      </div>
+       </form>
+    </div>
+
+  </div>
+</div> 
